@@ -1,71 +1,85 @@
 import React, { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { ImageContext } from "../context/ImageContext";
+import {
+  MdOutlineCloudUpload,
+  MdOutlineDriveFolderUpload,
+} from "react-icons/md";
+import { CiFileOn } from "react-icons/ci";
 
 function ImageUploadForm() {
   const Navigate = useNavigate();
-  const { images,setImages,setFiles } = useContext(ImageContext);
-  const [count,setCount] = useState(0);
+  const { images, setImages} = useContext(ImageContext);
+  const [count, setCount] = useState(0);
+  const [singleImage, setSingleImage] = useState(null);
 
+
+  //file upload
   const handleFolderInput = (event) => {
     const selectedFiles = event.target.files;
     const files = Array.from(selectedFiles); // Convert FileList to Array
-    setFiles(files);
-    const imageFiles = files.filter((file) =>  file.type.startsWith("image/"));
+
+    const imageFiles = files.filter((file) => file.type.startsWith("image/"));
+
     setCount(files.length);
-    const imageUrls = imageFiles.map((file)=>({
-      name:file.name,
-      url:  URL.createObjectURL(file),
-      file:file
+    const imageUrls = imageFiles.map((file) => ({
+      name: file.name,
+      url: URL.createObjectURL(file),
+      file: file,
     }));
     setImages(imageUrls);
+    Navigate("/images");
   };
 
   return (
-    <div className="w-full h-[200vh] text-white bg-gray-800 p-8">
+    <div className="w-full h-[200vh] text-white bg-gray-800 p-8 flex flex-col justify-center items-center gap-3">
+      <div className="h-20 w-20  rounded-full flex items-center justify-center text-5xl bg-blue-100">
+        <MdOutlineCloudUpload />
+      </div>
       <h1 className="text-center font-extrabold text-[35px] mb-6">
-        Upload Your Images
+        Drag and drop file(s) to upload, or:
       </h1>
 
       <div className="flex justify-center">
-        <form className="space-y-6" onSubmit={()=>{Navigate("/images", {state: {images: images}});}}>
-          <div>
-          <label className="inline-flex items-center justify-center min-h-[80px] min-w-[330px] box-border px-12 py-6 font-medium text-2xl bg-[#e5322d] leading-[28px] align-middle text-white no-underline mb-3 transition-colors duration-300 ease-linear border-0 rounded-3xl shadow-md max-w-[60vw] hover:bg-red-700">
+        <form
+          className="space-y-6"
+          onSubmit={() => {
+            Navigate("/images", { state: { images: images } });
+          }}
+        >
+          <div className=" flex gap-10">
+            <label className="inline-flex items-center justify-center min-h-[50px] min-w-[230px] px-12 py-6 font-medium text-2xl bg-[#e5322d] text-white rounded-3xl shadow-md max-w-[60vw] transition-all duration-300 ease-linear cursor-pointer hover:bg-red-700 hover:shadow-lg">
+              <div className="flex gap-4 justify-center items-center text-lg">
+                <CiFileOn size={30} />
+                Upload File
+              </div>
 
-            <input
-              type="file"
-              webkitdirectory=""
-              multiple
-              onChange={handleFolderInput}
-            />
+              <input
+                type="file"
+                onChange={handleFolderInput}
+                className="hidden"
+              />
             </label>
+            <label className="inline-flex items-center justify-center min-h-[50px] min-w-[230px] px-12 py-6 font-medium text-2xl bg-[#e5322d] text-white rounded-3xl shadow-md max-w-[60vw] transition-all duration-300 ease-linear cursor-pointer hover:bg-red-700 hover:shadow-lg">
+              <div className="flex gap-4 justify-center items-center text-lg">
+                <MdOutlineDriveFolderUpload size={30} />
+                Upload Folder
+              </div>
 
+              <input
+                type="file"
+                webkitdirectory=""
+                multiple
+                onChange={handleFolderInput}
+                className="hidden"
+              />
+            </label>
           </div>
 
-          <div className="overflow-y-scroll">
-        <h3 className="text-white">Total Selected Files:</h3>
-        <p>total selected file {count}</p>
-      </div>
-
-          <button
-            className="
-            bg-blue-500
-            text-white
-            font-semibold
-            py-2 px-4
-            rounded-lg
-            hover:bg-blue-600
-            focus:outline-none
-            focus:ring-2
-            focus:ring-blue-300
-            shadow-md
-            transition-all
-            duration-200
-            ease-in-out
-          "
-          >
-            Submit
-          </button>
+          {/* <div className="">
+            <h3 className="text-white">Total Selected Files:</h3>
+            <p>total selected file {count}</p>
+          </div> */}
         </form>
       </div>
     </div>

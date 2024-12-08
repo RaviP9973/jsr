@@ -13,7 +13,7 @@ const Navbar = (props) => {
   return (
     <div className="flex justify-between items-center w-11/12 max-w-[1160px] py-4 mx-auto ">
       <Link to="/">
-      <img src={logo} alt="logo" width={80} height={16} loading ="lazy" /></Link>
+      <img src={logo} alt="logo" width={60} height={12} loading ="lazy" /></Link>
 
       <nav>
         <ul className="flex gap-5 text-richblack-100">
