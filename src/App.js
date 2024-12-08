@@ -7,6 +7,8 @@ import Login from "./Components/Login";
 import Signup from "./Components/Signup";
 import Dashboard from "./Components/Dashboard";
 import ImageUploadForm from "./Components/ImageUploadForm";
+import Display from "./Components/Display";
+import GeneratedImage from "./Components/GeneratedImage";
 function App() {
   const [isLoggedIn,setIsLoggedIn] = useState(false);
   return (
@@ -18,6 +20,8 @@ function App() {
         <Route path="/signup" element={<Signup setIsLoggedIn={setIsLoggedIn}/>}></Route>
         <Route path="/dashboard" element={<Dashboard />}></Route>
         <Route path="model" element={<ImageUploadForm/>}></Route>
+        <Route path="/images" element={<Display/>}></Route>
+        <Route path="/genratedImage" element={<GeneratedImage/>}></Route>
       </Routes>
     </div>
   );
