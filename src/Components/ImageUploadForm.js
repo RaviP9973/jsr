@@ -6,13 +6,44 @@ import {
   MdOutlineDriveFolderUpload,
 } from "react-icons/md";
 import { CiFileOn } from "react-icons/ci";
+import Papa from "papaparse";
 
 function ImageUploadForm() {
   const Navigate = useNavigate();
-  const { images, setImages} = useContext(ImageContext);
+  const { images, setImages ,setOgcv,setGencv} = useContext(ImageContext);
   const [count, setCount] = useState(0);
-  const [singleImage, setSingleImage] = useState(null);
+  
 
+  const [csvData, setCsvData] = useState([]);
+
+  const handleFileChange = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      Papa.parse(file, {
+        header: true, // Treat first row as column headers
+        skipEmptyLines: true,
+        complete: (result) => {
+          setCsvData(result.data); // Parsed CSV data
+          setOgcv(result.data);
+          console.log(result.data); // Log the data for debugging
+        },
+      });
+    }
+  };
+  const handleFileChangeGen = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      Papa.parse(file, {
+        header: true, // Treat first row as column headers
+        skipEmptyLines: true,
+        complete: (result) => {
+          setCsvData(result.data); // Parsed CSV data
+          setGencv(result.data);
+          console.log(result.data); // Log the data for debugging
+        },
+      });
+    }
+  };
 
   //file upload
   const handleFolderInput = (event) => {
@@ -27,6 +58,7 @@ function ImageUploadForm() {
       url: URL.createObjectURL(file),
       file: file,
     }));
+    
     setImages(imageUrls);
     Navigate("/images");
   };
@@ -59,6 +91,22 @@ function ImageUploadForm() {
                 onChange={handleFolderInput}
                 className="hidden"
               />
+            </label>
+            <label className="inline-flex items-center justify-center min-h-[50px] min-w-[230px] px-12 py-6 font-medium text-2xl bg-[#e5322d] text-white rounded-3xl shadow-md max-w-[60vw] transition-all duration-300 ease-linear cursor-pointer hover:bg-red-700 hover:shadow-lg">
+              <div className="flex gap-4 justify-center items-center text-lg">
+                <CiFileOn size={30} />
+                Upload CSV
+              </div>
+
+              <input type="file" accept=".csv" className="hidden" onChange={handleFileChange} />
+            </label>
+            <label className="inline-flex items-center justify-center min-h-[50px] min-w-[230px] px-12 py-6 font-medium text-2xl bg-[#e5322d] text-white rounded-3xl shadow-md max-w-[60vw] transition-all duration-300 ease-linear cursor-pointer hover:bg-red-700 hover:shadow-lg">
+              <div className="flex gap-4 justify-center items-center text-lg">
+                <CiFileOn size={30} />
+                Upload CSV Gen
+              </div>
+
+              <input type="file" accept=".csv" className="hidden" onChange={handleFileChangeGen} />
             </label>
             <label className="inline-flex items-center justify-center min-h-[50px] min-w-[230px] px-12 py-6 font-medium text-2xl bg-[#e5322d] text-white rounded-3xl shadow-md max-w-[60vw] transition-all duration-300 ease-linear cursor-pointer hover:bg-red-700 hover:shadow-lg">
               <div className="flex gap-4 justify-center items-center text-lg">

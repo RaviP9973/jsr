@@ -28,7 +28,7 @@ const Display = () => {
               onClick={() => handleButtonClick(image)}
             />
             <button
-              className="text-[#6706ce] outline outline-[#6706ce] absolute bottom-11 right-5 bg-white py-1 px-2 rounded-lg shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 flex items-center justify-center hover:bg-[#f0e7ff] focus:ring-4 focus:ring-[#6706ce50]"
+              className="text-[#6706ce] outline outline-[1px] outline-[#6706ce] absolute bottom-11 right-5 bg-white py-1 px-2 rounded-lg shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 flex items-center justify-center hover:bg-[#f0e7ff] focus:ring-4 focus:ring-[#6706ce50]"
               onClick={() => handleButtonClick(image)}
             >
               <MdDirectionsRun className="text-xl" />
