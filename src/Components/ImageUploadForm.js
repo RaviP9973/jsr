@@ -128,6 +128,8 @@ function ImageUploadForm() {
             <h3 className="text-white">Total Selected Files:</h3>
             <p>total selected file {count}</p>
           </div> */}
+
+          <button onClick={()=>Navigate("/route")}>Plan Trip</button>
         </form>
       </div>
     </div>
