@@ -1,63 +1,103 @@
 import React from "react";
-import logo from "../assets/logoDrone.jpg";
-
 import { Link } from "react-router-dom";
 import { toast } from "react-hot-toast";
-import Template from "./Template";
 
 const Navbar = (props) => {
     let isLoggedIn = props.isLoggedIn;
     let setIsLoggedIn = props.setIsLoggedIn;
 
-    
-  return (
-    <div className="flex justify-between items-center w-11/12 max-w-[1160px] py-4 mx-auto ">
-      <Link to="/">
-      <img src={logo} alt="logo" width={60} height={12} loading ="lazy" /></Link>
+    return (
+        <div className="bg-gradient-to-r from-blue-500 to-purple-600 text-white w-full py-4 shadow-md">
+            {/* Container */}
+            <div className="flex justify-between items-center w-11/12 max-w-[1200px] mx-auto">
+                {/* Logo Section */}
+                <Link to="/">
+                    <div className="flex items-center gap-2">
+                        <img
+                            src={require("../TEAM.png")}
+                            alt="JSR Logo"
+                            className="h-12 w-12 rounded-full border-2 border-white shadow-md"
+                        />
+                        <span className="text-2xl font-bold">DronePatrol</span>
+                    </div>
+                </Link>
 
-      <nav>
-        <ul className="flex gap-5 text-richblack-100">
-          <li>
-            <Link to="/">Home</Link>
-          </li>
-          <li>
-            <Link to="/">About</Link>
-          </li>
-          <li>
-            <Link to="/">Contact</Link>
-          </li>
-        </ul>
-      </nav>
+                {/* Navigation Links */}
+                <nav>
+                    <ul className="flex gap-8 text-lg font-medium">
+                        <li>
+                            <Link
+                                to="/"
+                                className="hover:text-yellow-300 transition duration-300"
+                            >
+                                Home
+                            </Link>
+                        </li>
+                        <li>
+                            <Link
+                                to="/about"
+                                className="hover:text-yellow-300 transition duration-300"
+                            >
+                                About
+                            </Link>
+                        </li>
+                        <li>
+                            <Link
+                                to="/features"
+                                className="hover:text-yellow-300 transition duration-300"
+                            >
+                                Features
+                            </Link>
+                        </li>
+                        <li>
+                            <Link
+                                to="/contact"
+                                className="hover:text-yellow-300 transition duration-300"
+                            >
+                                Contact
+                            </Link>
+                        </li>
+                    </ul>
+                </nav>
 
-      <div className="flex items-center gap-x-4 ">
-        { !isLoggedIn &&
-          <Link to="/login">
-            <button className="bg-richblack-800 text-richblack-100 py-[8px] px-[12px] rounded-[8px] border-richblack-700">Log In</button>
-          </Link>
-        }
-        {!isLoggedIn &&
-          <Link to="/signup">
-            <button className="bg-richblack-800 text-richblack-100 py-[8px] px-[12px] rounded-[8px] border-richblack-700">Sign up</button>
-          </Link>
-        }
-        {
-          isLoggedIn &&
-          <Link to="/">
-            <button className="bg-richblack-800 text-richblack-100 py-[8px] px-[12px] rounded-[8px] border-richblack-700" onClick={()=>{
-              setIsLoggedIn(false)
-              toast.success("Loged out")
-            }}>Logout</button>
-          </Link>
-        }
-        { 
-          isLoggedIn &&
-          <Link to="/dashboard">
-            <button className="bg-richblack-800 text-richblack-100 py-[8px] px-[12px] rounded-[8px] border-richblack-700">Dashboard</button> 
-          </Link>
-        }
-      </div>
-    </div>
-  )
-} 
+                {/* Authentication Section */}
+                <div className="flex items-center gap-4">
+                    {!isLoggedIn && (
+                        <Link to="/login">
+                            <button className="bg-yellow-400 text-black py-2 px-4 rounded-lg hover:bg-yellow-500 transition duration-300 shadow-md">
+                                Log In
+                            </button>
+                        </Link>
+                    )}
+                    {!isLoggedIn && (
+                        <Link to="/signup">
+                            <button className="bg-yellow-400 text-black py-2 px-4 rounded-lg hover:bg-yellow-500 transition duration-300 shadow-md">
+                                Sign Up
+                            </button>
+                        </Link>
+                    )}
+                    {isLoggedIn && (
+                        <button
+                            className="bg-red-400 text-white py-2 px-4 rounded-lg hover:bg-red-500 transition duration-300 shadow-md"
+                            onClick={() => {
+                                setIsLoggedIn(false);
+                                toast.success("Logged out");
+                            }}
+                        >
+                            Logout
+                        </button>
+                    )}
+                    {isLoggedIn && (
+                        <Link to="/dashboard">
+                            <button className="bg-green-400 text-white py-2 px-4 rounded-lg hover:bg-green-500 transition duration-300 shadow-md">
+                                Dashboard
+                            </button>
+                        </Link>
+                    )}
+                </div>
+            </div>
+        </div>
+    );
+};
 
 export default Navbar;

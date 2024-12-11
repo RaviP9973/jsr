@@ -1,199 +1,113 @@
 import React, { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { ImageContext } from "../context/ImageContext";
-import {
-  MdOutlineCloudUpload,
-  MdOutlineDriveFolderUpload,
-} from "react-icons/md";
+import { MdOutlineCloudUpload, MdOutlineDriveFolderUpload } from "react-icons/md";
 import { CiFileOn } from "react-icons/ci";
+import { FaRegFileExcel } from "react-icons/fa";
 import Papa from "papaparse";
 
 function ImageUploadForm() {
   const Navigate = useNavigate();
-  const { images, setImages ,setOgcv,setGencv} = useContext(ImageContext);
+  const { images, setImages, setOgcv, setGencv } = useContext(ImageContext);
   const [count, setCount] = useState(0);
-  
-
   const [csvData, setCsvData] = useState([]);
 
   const handleFileChange = (event) => {
     const file = event.target.files[0];
     if (file) {
       Papa.parse(file, {
-        header: true, // Treat first row as column headers
+        header: true,
         skipEmptyLines: true,
         complete: (result) => {
-          setCsvData(result.data); // Parsed CSV data
+          setCsvData(result.data);
           setOgcv(result.data);
-          console.log(result.data); // Log the data for debugging
         },
       });
     }
   };
+
   const handleFileChangeGen = (event) => {
     const file = event.target.files[0];
     if (file) {
       Papa.parse(file, {
-        header: true, // Treat first row as column headers
+        header: true,
         skipEmptyLines: true,
         complete: (result) => {
-          setCsvData(result.data); // Parsed CSV data
+          setCsvData(result.data);
           setGencv(result.data);
-          console.log(result.data); // Log the data for debugging
         },
       });
     }
   };
 
-  //file upload
   const handleFolderInput = (event) => {
     const selectedFiles = event.target.files;
-    const files = Array.from(selectedFiles); // Convert FileList to Array
-
+    const files = Array.from(selectedFiles);
     const imageFiles = files.filter((file) => file.type.startsWith("image/"));
-
     setCount(files.length);
     const imageUrls = imageFiles.map((file) => ({
       name: file.name,
       url: URL.createObjectURL(file),
       file: file,
     }));
-    
     setImages(imageUrls);
     Navigate("/images");
   };
 
   return (
-    <div className="w-full h-[200vh] text-white bg-gray-800 p-8 flex flex-col justify-center items-center gap-3">
-      <div className="h-20 w-20  rounded-full flex items-center justify-center text-5xl bg-blue-100">
+    <div className="w-full h-screen text-white p-8 flex flex-col justify-center items-center gap-3 bg-gradient-to-r from-[#3b82f6] to-[#8b5cf6]">
+      <div className="h-20 w-20 rounded-full flex items-center justify-center text-5xl bg-[#eab308] hover:scale-105 hover:bg-yellow-400 transition-all duration-300 ease-in-out">
         <MdOutlineCloudUpload />
       </div>
-      <h1 className="text-center font-extrabold text-[35px] mb-6">
+      <h1 className="text-center font-extrabold text-[35px] mb-6 hover:text-[#fdd830]">
         Drag and drop file(s) to upload, or:
       </h1>
-
-      <div className="flex justify-center">
-        <form
-          className="space-y-6"
-          onSubmit={() => {
-            Navigate("/images", { state: { images: images } });
-          }}
-        >
-          <div className=" flex gap-10">
-            <label className="inline-flex items-center justify-center min-h-[50px] min-w-[230px] px-12 py-6 font-medium text-2xl bg-[#e5322d] text-white rounded-3xl shadow-md max-w-[60vw] transition-all duration-300 ease-linear cursor-pointer hover:bg-red-700 hover:shadow-lg">
-              <div className="flex gap-4 justify-center items-center text-lg">
-                <CiFileOn size={30} />
-                Upload File
-              </div>
-
-              <input
-                type="file"
-                onChange={handleFolderInput}
-                className="hidden"
-              />
-            </label>
-            <label className="inline-flex items-center justify-center min-h-[50px] min-w-[230px] px-12 py-6 font-medium text-2xl bg-[#e5322d] text-white rounded-3xl shadow-md max-w-[60vw] transition-all duration-300 ease-linear cursor-pointer hover:bg-red-700 hover:shadow-lg">
-              <div className="flex gap-4 justify-center items-center text-lg">
-                <CiFileOn size={30} />
-                Upload CSV
-              </div>
-
-              <input type="file" accept=".csv" className="hidden" onChange={handleFileChange} />
-            </label>
-            <label className="inline-flex items-center justify-center min-h-[50px] min-w-[230px] px-12 py-6 font-medium text-2xl bg-[#e5322d] text-white rounded-3xl shadow-md max-w-[60vw] transition-all duration-300 ease-linear cursor-pointer hover:bg-red-700 hover:shadow-lg">
-              <div className="flex gap-4 justify-center items-center text-lg">
-                <CiFileOn size={30} />
-                Upload CSV Gen
-              </div>
-
-              <input type="file" accept=".csv" className="hidden" onChange={handleFileChangeGen} />
-            </label>
-            <label className="inline-flex items-center justify-center min-h-[50px] min-w-[230px] px-12 py-6 font-medium text-2xl bg-[#e5322d] text-white rounded-3xl shadow-md max-w-[60vw] transition-all duration-300 ease-linear cursor-pointer hover:bg-red-700 hover:shadow-lg">
-              <div className="flex gap-4 justify-center items-center text-lg">
-                <MdOutlineDriveFolderUpload size={30} />
-                Upload Folder
-              </div>
-
-              <input
-                type="file"
-                webkitdirectory=""
-                multiple
-                onChange={handleFolderInput}
-                className="hidden"
-              />
-            </label>
+      <div className="flex flex-col md:flex-row justify-center gap-6">
+        {/* Upload File Section */}
+        <label className="inline-flex items-center justify-center min-h-[50px] min-w-[230px] px-12 py-6 font-medium text-2xl bg-[#fbbf24] text-black rounded-xl shadow-lg max-w-[60vw] transition-all duration-300 ease-in-out cursor-pointer hover:bg-[#f59e0b] hover:scale-105 hover:shadow-xl">
+          <div className="flex gap-4 justify-center items-center text-lg">
+            <CiFileOn size={30}/>
+            Upload File
           </div>
+          <input type="file" className="hidden" onChange={handleFileChange} />
+        </label>
+        {/* Upload CSV Button */}
+        <label className="inline-flex items-center justify-center min-h-[50px] min-w-[230px] px-12 py-6 font-medium text-2xl bg-[#fbbf24] text-black rounded-xl shadow-lg max-w-[60vw] transition-all duration-300 ease-in-out cursor-pointer hover:bg-[#f59e0b] hover:scale-105 hover:shadow-xl">
+          <div className="flex gap-4 justify-center items-center text-lg">
+          <FaRegFileExcel size={30}/>
+            Upload CSV
+          </div>
+          <input type="file" accept=".csv" className="hidden" onChange={handleFileChange} />
+        </label>
+        {/* Upload CSV Gen Button */}
+        <label className="inline-flex items-center justify-center min-h-[50px] min-w-[230px] px-12 py-6 font-medium text-2xl bg-[#fbbf24] text-black rounded-xl shadow-lg max-w-[60vw] transition-all duration-300 ease-in-out cursor-pointer hover:bg-[#f59e0b] hover:scale-105 hover:shadow-xl">
+          <div className="flex gap-4 justify-center items-center text-lg">
+          <FaRegFileExcel size={30}/>
 
-          {/* <div className="">
-            <h3 className="text-white">Total Selected Files:</h3>
-            <p>total selected file {count}</p>
-          </div> */}
-
-          <button onClick={()=>Navigate("/route")}>Plan Trip</button>
-        </form>
+            Upload CSV Gen
+          </div>
+          <input type="file" accept=".csv" className="hidden" onChange={handleFileChangeGen} />
+        </label>
+        {/* Upload Folder Button */}
+        <label className="inline-flex items-center justify-center min-h-[50px] min-w-[230px] px-12 py-6 font-medium text-2xl bg-[#fbbf24] text-black rounded-xl shadow-lg max-w-[60vw] transition-all duration-300 ease-in-out cursor-pointer hover:bg-[#f59e0b] hover:scale-105 hover:shadow-xl">
+          <div className="flex gap-4 justify-center items-center text-lg">
+            <MdOutlineDriveFolderUpload size={30} />
+            Upload Folder
+          </div>
+          <input
+            type="file"
+            multiple
+            webkitdirectory="true" // Enables folder upload
+            onChange={handleFolderInput}
+            className="hidden"
+          />
+           
+        </label>
+        <button onClick={()=>Navigate("/route")}   className="mt-6 px-6 py-3 text-lg font-bold text-white bg-gradient-to-r from-purple-500 to-indigo-500 rounded-lg shadow-md hover:scale-105 hover:shadow-xl hover:from-purple-600 hover:to-indigo-600 transition-all duration-300 ease-in-out"
+           >Plan Trip</button>
       </div>
     </div>
   );
 }
 
 export default ImageUploadForm;
-
-// import React, { useContext, useState } from "react";
-// import axios from "axios";
-// import { ImageContext } from "../context/ImageContext";
-
-// function ImageUploadForm() {
-//   const { loading, setLoading } = useContext(ImageContext);
-//   const [file, setFile] = useState(null);
-//   const [data, setData] = useState(null);
-
-//   const handleFileChange = (e) => {
-//     setFile(e.target.files[0]);
-//   };
-
-//   const handleUpload = async () => {
-//     if (!file) {
-//       alert("Please select a file!");
-//       return;
-//     }
-
-//     const formData = new FormData();
-//     formData.append("image", file);
-//     setLoading(true);
-//     try {
-//       const response = await axios.post(
-//         "http://localhost:4000/api/v1/genrateImage",
-//         formData,
-//         {
-//           headers: {
-//             "Content-Type": "multipart/form-data",
-//           },
-//         }
-//       );
-//       console.log("Response:", response.data);
-//       setData(response.data);
-//     } catch (error) {
-//       console.error("Error uploading image:", error.message);
-//     } finally {
-//       setLoading(false);
-//     }
-//   };
-
-//   return (
-//     <div>
-//       <h1>Upload an Image</h1>
-//       <input className="text-white" type="file" onChange={handleFileChange} />
-//       <button className="text-white" onClick={handleUpload}>
-//         Upload
-//       </button>
-
-//       {loading ? (
-//         <div className="text-white">Loading</div>
-//       ) : (
-//         <div className="text-white"> <img src={data.imageUrl} alt="" /></div>
-//       )}
-//     </div>
-//   );
-// }
-
-// export default ImageUploadForm;
