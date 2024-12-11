@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import TableComponent from './TableComponent';
 function ladingPage() {
   const scrollToSection = (sectionId) => {
     const section = document.getElementById(sectionId);
@@ -12,16 +13,32 @@ function ladingPage() {
 
 
       {/* Hero Section */}
-      <section className="bg-cover bg-center h-screen text-white flex flex-col items-center justify-center" style={{ backgroundImage: 'url(/drones-bg.jpg)' }}>
-        <h2 className="text-5xl font-bold mb-4">Empowering the Future with Drones</h2>
-        <p className="text-xl mb-6">create greateness using innovative drone technology</p>
+<section className="h-screen text-white flex flex-col items-center justify-center relative pt-16">
+  {/* Image at the top, covering full width and 30% transparent */}
+  <div className="w-full absolute top-0 left-0 right-0 bottom-0 z-0">
+    <img
+      src="/drone-flying-city-with-words-drones-2.jpg" // Ensure the image path is correct
+      className="w-full h-[calc(100vh-4rem-16px)] object-cover opacity-30 -mt-10" // Consistent dimensions and styles
+    />
+  </div>
+  
+  {/* Text overlaying the image */}
+  <div className="relative z-10 flex flex-col items-center text-center px-4 py-16">
+    <h2 className="text-5xl font-bold mb-4">Empowering the Future with Drones</h2>
+    <p className="text-xl mb-6">Creating greatness using innovative drone technology</p>
+    
+    
+
+    <Link to="/model">
+      <button className="bg-[rgb(234,_179,_8)] hover:bg-[rgb(234,_140,_0)] text-white py-3 px-8 rounded-full mt-8">
+        Check out
+      </button>
+    </Link>
+
+  </div>
+</section>
 
 
-        <Link to="/model">
-          <button  className="bg-orange-500 hover:bg-orange-600 text-white py-3 px-8 rounded-full">Check out</button>
-        </Link>
-
-      </section>
 
       {/* About Section */}
       <section id="about" className="py-16 px-6 text-center bg-gray-100">
@@ -48,11 +65,32 @@ function ladingPage() {
         </div>
       </section>
 
-      {/* Contact Section */}
-      <section id="contact" className="py-16 px-6 text-center bg-gray-100">
-        <h2 className="text-4xl font-semibold mb-6">Contact Us</h2>
-        <p>Interested in partnering or learning more? Reach out to us via email: <a href="mailto:info@dronestartups.com" className="text-orange-500">info@droneMaster.com</a></p>
+      
+            {/* Contact Section */}
+            <section
+        id="contact"
+        className="py-16 px-6 text-center"
+        style={{
+          background: "linear-gradient(to right, #3b82f6, #8b5cf6)", // Gradient from blue to purple
+        }}
+      >
+        <h2 className="text-4xl font-semibold mb-6 text-white">Contact Us</h2>
+        <p className="text-white text-lg">
+          Interested in partnering or learning more? Reach out to us via email:{' '}
+          <a
+            href="mailto:info@dronestartups.com"
+            className="text-yellow-300 hover:text-yellow-400"
+          >
+            info@droneMaster.com
+          </a>
+        </p>
+        <div className="mt-8">
+          <button className="bg-yellow-400 text-black py-3 px-8 rounded-full hover:bg-yellow-500">
+            Send Message
+          </button>
+        </div>
       </section>
+
 
 
     </div>
