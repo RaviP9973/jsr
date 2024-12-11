@@ -16,6 +16,10 @@ const GeneratedImage = () => {
   const [apercentageError, setApercentageError] = useState(null);
   const [calculatedArea, setCalculatedArea] = useState(null);
   const [areaFlag, setAreaFlag] = useState(null);
+  const [actualHeight, setActualHeight] = useState(null);
+  const [hpercentageError, setHpercentageError] = useState(null);
+  const [measuredHeight, setMeasuredHeight] = useState(null);
+  const [heightFlag, setHeightFlag] = useState(null);
 
   function getData(cvData) {
     const name1 = image.name.replace(/\.jpg$/i, "");
@@ -31,15 +35,27 @@ const GeneratedImage = () => {
 
   useEffect(() => {
     if (ogData && ogData.length > 0) {
+      // Area Metrics
       const actualAreaValue = ogData[0]["Actual Area (sq ft)"];
       const calculatedAreaValue = 200; // Example value
-      const error = ((calculatedAreaValue - actualAreaValue) / actualAreaValue) * 100;
-      const flag = error >= 10;
+      const areaError = ((calculatedAreaValue - actualAreaValue) / actualAreaValue) * 100;
+      const areaFlagValue = areaError >= 10;
 
       setActualArea(actualAreaValue);
       setCalculatedArea(calculatedAreaValue);
-      setApercentageError(error.toFixed(2));
-      setAreaFlag(flag ? "true" : "false");
+      setApercentageError(areaError.toFixed(2));
+      setAreaFlag(areaFlagValue ? "true" : "false");
+
+      // Height Metrics
+      const actualHeightValue = ogData[0]["Actual Height (ft)"];
+      const measuredHeightValue = 30; // Example value
+      const heightError = ((measuredHeightValue - actualHeightValue) / actualHeightValue) * 100;
+      const heightFlagValue = heightError >= 10;
+
+      setActualHeight(actualHeightValue);
+      setMeasuredHeight(measuredHeightValue);
+      setHpercentageError(heightError.toFixed(2));
+      setHeightFlag(heightFlagValue ? "true" : "false");
     }
   }, [ogData]);
 
@@ -52,7 +68,21 @@ const GeneratedImage = () => {
     fetchGeneratedImage();
   }, [image]);
 
-  const areacomparisonHeaders = ["Building Metrics", "Actual Area (sq ft)", "Calculated Area (sq ft)", "%Error", "Flag"];
+  const areacomparisonHeaders = [
+    "Building Metrics",
+    "Actual Area (sq ft)",
+    "Calculated Area (sq ft)",
+    "%Error",
+    "Flag",
+  ];
+
+  const heightcomparisonHeaders = [
+    "Building Metrics",
+    "Actual Height (ft)",
+    "Measured Height (ft)",
+    "%Error",
+    "Flag",
+  ];
 
   const AreaComparisonData = [
     {
@@ -61,6 +91,16 @@ const GeneratedImage = () => {
       "Calculated Area (sq ft)": calculatedArea || "Loading...",
       "%Error": apercentageError || "Loading...",
       Flag: areaFlag || "Loading...",
+    },
+  ];
+
+  const HeightComparisonData = [
+    {
+      "Building Metrics": "Height",
+      "Actual Height (ft)": actualHeight || "Loading...",
+      "Measured Height (ft)": measuredHeight || "Loading...",
+      "%Error": hpercentageError || "Loading...",
+      Flag: heightFlag || "Loading...",
     },
   ];
 
@@ -74,6 +114,9 @@ const GeneratedImage = () => {
                 <h2 className="text-[#F72C5B] text-center text-xl font-extrabold p-2">Original Image</h2>
                 <img src={image.url} alt="Original" className="h-96 w-[96] object-contain rounded-b-lg" />
               </div>
+              <h2 className="text-xl font-bold mb-4 text-white text-center underline decoration-yellow-300">
+        House Details
+      </h2>
               <TableComponent headers={["House", "Coordinates", "Actual Height (ft)", "Actual Area (sq ft)"]} data={ogData} />
             </div>
             <div>
@@ -85,11 +128,17 @@ const GeneratedImage = () => {
                   className="h-96 w-[96] object-contain rounded-b-lg"
                 />
               </div>
+              <h2 className="text-xl font-bold mb-4 text-white text-center underline decoration-yellow-300">
+        House Details
+      </h2>
               <TableComponent headers={["House", "Coordinates", "Measured Height (ft)", "Calculated Area (sq ft)"]} data={genData} />
             </div>
           </div>
           {ogData && genData && (
-            <TableComponent headers={areacomparisonHeaders} data={AreaComparisonData} className="table-comparison" />
+            <div className="flex flex-col gap-10">
+              <TableComponent headers={areacomparisonHeaders} data={AreaComparisonData} className="table-comparison" />
+              <TableComponent headers={heightcomparisonHeaders} data={HeightComparisonData} className="table-comparison" />
+            </div>
           )}
         </div>
       ) : (

@@ -3,9 +3,7 @@ import React from "react";
 const TableComponent = ({ headers, data }) => {
   return (
     <div className="mt-5">
-      <h2 className="text-xl font-bold mb-4 text-white text-center underline decoration-yellow-300">
-        House Details
-      </h2>
+      
       <table className="table-auto border-collapse border border-gray-300 w-full text-white">
         <thead>
           <tr className="bg-[#8b5cf6]">
