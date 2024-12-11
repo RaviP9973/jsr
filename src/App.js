@@ -9,6 +9,7 @@ import Dashboard from "./Components/Dashboard";
 import ImageUploadForm from "./Components/ImageUploadForm";
 import Display from "./Components/Display";
 import GeneratedImage from "./Components/GeneratedImage";
+import MapContainer from "./Components/MapContainer";
 function App() {
   const [isLoggedIn,setIsLoggedIn] = useState(false);
   return (
@@ -22,6 +23,7 @@ function App() {
         <Route path="model" element={<ImageUploadForm/>}></Route>
         <Route path="/images" element={<Display/>}></Route>
         <Route path="/genratedImage" element={<GeneratedImage/>}></Route>
+        <Route path="/route" element={<MapContainer/>}></Route>
       </Routes>
     </div>
   );
