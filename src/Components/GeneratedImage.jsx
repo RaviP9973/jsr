@@ -23,7 +23,7 @@ const GeneratedImage = () => {
 
   function getData(cvData) {
     const name1 = image.name.replace(/\.jpg$/i, "");
-    return cvData.filter((house) => house.House.includes(name1));
+    return cvData.filter((house) => house.House === name1);
   }
 
   useEffect(() => {
@@ -37,9 +37,13 @@ const GeneratedImage = () => {
     if (ogData && ogData.length > 0) {
       // Area Metrics
       const actualAreaValue = ogData[0]["Actual Area (sq ft)"];
+      // const gsd = (flightHeight * sensonHeight)/(focalLength * imageHeight);
+      // const pixelcount = result.pixel_count
+      //const calculatedAreaValue = gsd * gsd * pixelcount;
+      // console.log(result.result.pixel_count)
       const calculatedAreaValue = 200; // Example value
       const areaError = ((calculatedAreaValue - actualAreaValue) / actualAreaValue) * 100;
-      const areaFlagValue = areaError >= 10;
+      const areaFlagValue = Math.abs(areaError) >= 10;
 
       setActualArea(actualAreaValue);
       setCalculatedArea(calculatedAreaValue);
@@ -48,9 +52,10 @@ const GeneratedImage = () => {
 
       // Height Metrics
       const actualHeightValue = ogData[0]["Actual Height (ft)"];
-      const measuredHeightValue = 30; // Example value
+      // const measuredHeightValue = 30; // Example value
+      const measuredHeightValue = genData[0]["Measured Height (ft)"]; // Example value
       const heightError = ((measuredHeightValue - actualHeightValue) / actualHeightValue) * 100;
-      const heightFlagValue = heightError >= 10;
+      const heightFlagValue = Math.abs(heightError) >= 10;
 
       setActualHeight(actualHeightValue);
       setMeasuredHeight(measuredHeightValue);
@@ -68,41 +73,33 @@ const GeneratedImage = () => {
     fetchGeneratedImage();
   }, [image]);
 
-  const areacomparisonHeaders = [
+  const comparisonHeaders = [
     "Building Metrics",
-    "Actual Area (sq ft)",
-    "Calculated Area (sq ft)",
+    "Actual Metric",
+    "Calculated Metric",
     "%Error",
     "Flag",
   ];
 
-  const heightcomparisonHeaders = [
-    "Building Metrics",
-    "Actual Height (ft)",
-    "Measured Height (ft)",
-    "%Error",
-    "Flag",
-  ];
 
-  const AreaComparisonData = [
+  const comparisonData = [
     {
-      "Building Metrics": "Area",
-      "Actual Area (sq ft)": actualArea || "Loading...",
-      "Calculated Area (sq ft)": calculatedArea || "Loading...",
+      "Building Metrics": "Area sq(ft)",
+      "Actual Metric": actualArea || "Loading...",
+      "Calculated Metric": calculatedArea || "Loading...",
       "%Error": apercentageError || "Loading...",
       Flag: areaFlag || "Loading...",
     },
-  ];
-
-  const HeightComparisonData = [
     {
-      "Building Metrics": "Height",
-      "Actual Height (ft)": actualHeight || "Loading...",
-      "Measured Height (ft)": measuredHeight || "Loading...",
+      "Building Metrics": "Height (ft)",
+      "Actual Metric": actualHeight || "Loading...",
+      "Calculated Metric": measuredHeight || "Loading...",
       "%Error": hpercentageError || "Loading...",
       Flag: heightFlag || "Loading...",
     },
   ];
+
+  
 
   return (
     <div className="bg-gradient-to-br from-[#3b82f6] to-purple-600 p-10 h-fit">
@@ -136,8 +133,8 @@ const GeneratedImage = () => {
           </div>
           {ogData && genData && (
             <div className="flex flex-col gap-10">
-              <TableComponent headers={areacomparisonHeaders} data={AreaComparisonData} className="table-comparison" />
-              <TableComponent headers={heightcomparisonHeaders} data={HeightComparisonData} className="table-comparison" />
+              <TableComponent headers={comparisonHeaders} data={comparisonData} className="table-comparison" />
+              {/* <TableComponent headers={heightcomparisonHeaders} data={HeightComparisonData} className="table-comparison" /> */}
             </div>
           )}
         </div>

@@ -29,7 +29,7 @@ function ladingPage() {
     
     
 
-    <Link to="/model">
+    <Link to="/checkout">
       <button className="bg-[rgb(234,_179,_8)] hover:bg-[rgb(234,_140,_0)] text-white py-3 px-8 rounded-full mt-8">
         Check out
       </button>

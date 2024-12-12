@@ -13,6 +13,8 @@ import MapContainer from "./Components/MapContainer";
 import TableComponent from "./Components/TableComponent";
 import About from "./Components/About";
 import ContactUs from "./Components/ContactUs";
+import Checkout from "./Components/Checkout";
+import Footer from "./Components/Footer";
 function App() {
   const [isLoggedIn,setIsLoggedIn] = useState(false);
   return (
@@ -23,14 +25,19 @@ function App() {
         <Route path="/login" element={<Login setIsLoggedIn={setIsLoggedIn}/>}></Route>
         <Route path="/signup" element={<Signup setIsLoggedIn={setIsLoggedIn}/>}></Route>
         <Route path="/dashboard" element={<Dashboard />}></Route>
-        <Route path="model" element={<ImageUploadForm/>}></Route>
+        <Route path="/model" element={<ImageUploadForm/>}></Route>
         <Route path="/images" element={<Display/>}></Route>
         <Route path="/genratedImage" element={<GeneratedImage/>}></Route>
         <Route path="/route" element={<MapContainer/>}></Route>
 
         <Route path="/about" element={<About/>}></Route>
         <Route path="/contact" element={<ContactUs/>}></Route>
+        <Route path="/checkout" element={<Checkout/>}></Route>
       </Routes>
+      <div>
+        <Footer/>
+
+      </div>
     </div>
   );
 }

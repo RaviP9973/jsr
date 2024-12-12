@@ -43,7 +43,7 @@ const MapContainer = () => {
           mapRef.current = new mapboxgl.Map({
             container: mapContainerRef.current,
             style: "mapbox://styles/mapbox/satellite-streets-v11", // Satellite with labels
-            center: userLocation,
+            center: userLocation ,
             zoom: 12,
           });
 
